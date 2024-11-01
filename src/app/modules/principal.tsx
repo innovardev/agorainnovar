@@ -26,24 +26,22 @@ const Principal = () => {
             priority
           />
         </div>
-        <div className='container mx-auto p-6 '>
+        <div className='container mx-auto p-11 '>
           <h1 className="text-pretty text-zinc-900  text-center font-light mb-4">Escoge la plataforma que deseas actualizar</h1>
-          <div className="grid gap-4 grid-cols-2 pb-3">
-            <div className="flex justify-end items-end">
+          <div className="grid gap-3 grid-cols-2 pb-10">
+            <div className="flex justify-center items-center">
               <Image
                 src={logoshopy}
                 alt="Logo de Innovar Agora"
-                width={50}
                 height={50}
                 className="w-full md:w-auto"
                 priority
               />
             </div>
-            <div className="flex justify-start items-start">
+            <div className="flex justify-center items-center">
               <Image
                 src={logofalabella}
                 alt="Logo de Innovar Agora"
-                width={50}
                 height={50}
                 className="w-full md:w-auto"
                 priority
@@ -56,7 +54,7 @@ const Principal = () => {
                 placeholder="No desconfiamos de ti ;), pero es necesario que ingreses el TOKEN" onChange={(e) => setToken((e.target as HTMLInputElement).value)} />
             </div>
             <div className="flex justify-center items-center">
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-10 rounded-xl" onClick={handleToken}>GENERAR INVENTARIO</button>
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-5 px-16 rounded-xl" onClick={handleToken}>GENERAR INVENTARIO</button>
             </div>
           </div>
         </div>
