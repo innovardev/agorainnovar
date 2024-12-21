@@ -4,12 +4,30 @@ import Image from 'next/image';
 import logofalabella from '../../public/logofalabella.jpeg';
 import logoshopy from "../../public/logoshopy.png";
 import logoagora from "../../public/innovar.png";
+import callSoapApi from "../services/saturno.service";
 
 const Principal = () => {
   const [token, setToken] = useState<string>();
+  const [succes, setSucces] = useState<boolean>(false);
 
   const handleToken = () => {
-    console.log('token, ', token);
+    if (token === 'SecurePassword1n0v4r') {
+      setSucces(true)
+    } else {
+      console.error('token invalido estamos opteniendo su direccion ip')
+    }
+  }
+
+  const handlerSaturno = async () => {
+    try {
+      const data = await callSoapApi()
+      console.log('props: ', { props: { data } });
+      return { props: { data } }
+
+    } catch (error) {
+      return { props: { error: 'Error Consumiendo la Api Soap' } }
+    }
+
   }
 
   return (
@@ -49,13 +67,30 @@ const Principal = () => {
             </div>
           </div>
           <div className="flex flex-col space-y-4">
-            <div className="mb-4">
-              <input type="text" id="token" className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                placeholder="No desconfiamos de ti ;), pero es necesario que ingreses el TOKEN" onChange={(e) => setToken((e.target as HTMLInputElement).value)} />
-            </div>
-            <div className="flex justify-center items-center">
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-5 px-16 rounded-xl" onClick={handleToken}>GENERAR INVENTARIO</button>
-            </div>
+            {succes ?
+              (
+                <div>
+                  <div className="flex justify-center items-center">
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-5 px-16 rounded-xl" onClick={handlerSaturno}>GENERAR INVENTARIO</button>
+                  </div>
+                </div>
+              )
+
+              :
+              (
+                <div>
+                  <div className="mb-4">
+                    <input type="text" id="token" className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      placeholder="No desconfiamos de ti ;), pero es necesario que ingreses el TOKEN" onChange={(e) => setToken((e.target as HTMLInputElement).value)} />
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-5 px-16 rounded-xl" onClick={handleToken}>VALIDAR TOKEN</button>
+                  </div>
+                </div>
+
+              )
+            }
+
           </div>
         </div>
       </div>
