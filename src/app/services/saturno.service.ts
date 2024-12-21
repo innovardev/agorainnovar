@@ -1,7 +1,4 @@
 import axios from "axios";
-import { parseStringPromise } from 'xml2js';
-
-
 
 const createSoapRequest = () => `
 <?xml version="1.0" encoding="utf-8"?>

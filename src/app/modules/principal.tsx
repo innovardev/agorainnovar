@@ -23,9 +23,8 @@ const Principal = () => {
       const data = await callSoapApi()
       console.log('props: ', { props: { data } });
       return { props: { data } }
-
-    } catch (error) {
-      return { props: { error: 'Error Consumiendo la Api Soap' } }
+    } catch (error:any) {
+      return { props: { error: 'Error Consumiendo la Api Soap'+ error?.message } }
     }
 
   }
