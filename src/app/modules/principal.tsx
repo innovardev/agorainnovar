@@ -27,7 +27,7 @@ const Principal = () => {
       const header = [
         'Handle', 'Title',
         'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value', 'Option3 Name', 'Option3 Value',
-        'SKU', 'HS Code', 'COO', 'Bodega',
+        'SKU', 'HS Code', 'COO', 'Location',
         'Incoming', 'Unavailable', 'Committed', 'Available', 'On hand'
       ];
       const csv = jsonToCsv(data, header);
@@ -45,7 +45,10 @@ const Principal = () => {
       const headerRow = header.map(fieldName => `${fieldName}`).join(',');
   
       const rows = data.map((row: any) => {
-        const rowValues = header.map(fieldName => `${row[fieldName] || ''}`).join(',');
+        const rowValues = header
+        .map(fieldName => `${row[fieldName] || ''}`)
+        .join(',')
+        .replace(/"/g, '')
         // Eliminar la coma final si existe
         return rowValues.endsWith(',') ? rowValues.slice(0, -1) : rowValues;
       });
