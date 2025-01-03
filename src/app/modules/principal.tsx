@@ -4,7 +4,6 @@ import Image from 'next/image';
 import logofalabella from '../../public/logofalabella.jpeg';
 import logoshopy from "../../public/logoshopy.png";
 import logoagora from "../../public/innovar.png";
-import callSoapApi from "../services/saturno.service";
 
 const Principal = () => {
   const [token, setToken] = useState<string>();
@@ -20,11 +19,65 @@ const Principal = () => {
 
   const handlerSaturno = async () => {
     try {
-      const data = await callSoapApi()
-      console.log('props: ', { props: { data } });
-      return { props: { data } }
-    } catch (error:any) {
-      return { props: { error: 'Error Consumiendo la Api Soap'+ error?.message } }
+      const response = await fetch('/api/saturno');
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      const data: any = await response.text();
+      const header = [
+        'Handle', 'Title',
+        'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value', 'Option3 Name', 'Option3 Value',
+        'SKU', 'HS Code', 'COO', 'Bodega',
+        'Incoming', 'Unavailable', 'Committed', 'Available', 'On hand'
+      ];
+      const csv = jsonToCsv(data, header);
+      downloadCsv(csv, 'inventarioshopy.csv');
+    } catch (error: any) {
+      console.error("Error al consumir la API SOAP:", error);
+    }
+  };
+
+  function jsonToCsv(resjs: any, header: string[]): string {
+    // Parsear el JSON y verificar la estructura
+    const restojson = JSON.parse(resjs);
+    if (restojson && Array.isArray(restojson.VCL)) {
+      const data = restojson.VCL;
+      const headerRow = header.map(fieldName => `${fieldName}`).join(',');
+  
+      const rows = data.map((row: any) => {
+        const rowValues = header.map(fieldName => `${row[fieldName] || ''}`).join(',');
+        // Eliminar la coma final si existe
+        return rowValues.endsWith(',') ? rowValues.slice(0, -1) : rowValues;
+      });
+  
+      const csv = [headerRow, ...rows].join('\n');
+      return csv;
+    } else {
+      console.error('resjs no contiene un array válido en la propiedad VCL.');
+      return '';
+    }
+  }
+
+  function downloadCsv(csv: string, filename: string) {
+    if (!csv) {
+      console.error("No hay datos para descargar.");
+      return;
+    }
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+
+    // Para otros navegadores
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      // Crear un objeto URL para el Blob
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
   }
