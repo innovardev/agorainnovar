@@ -26,7 +26,7 @@ const Principal = () => {
       const data: any = await response.text();
       const header = [
         'Handle', 'Title',
-        'Option1 Name', 'Option1 Value', 'Option2 Name', 'Option2 Value', 'Option3 Name', 'Option3 Value',
+        'Option1_Name', 'Option1_Value', 'Option2_Name', 'Option2_Value', 'Option3_Name', 'Option3_Value',
         'SKU', 'HS Code', 'COO', 'Location',
         'Incoming', 'Unavailable', 'Committed', 'Available', 'On hand'
       ];
@@ -49,6 +49,7 @@ const Principal = () => {
         .map(fieldName => `${row[fieldName] || ''}`)
         .join(',')
         .replace(/"/g, '')
+        .replace(/_/g, ' ')
         // Eliminar la coma final si existe
         return rowValues.endsWith(',') ? rowValues.slice(0, -1) : rowValues;
       });
