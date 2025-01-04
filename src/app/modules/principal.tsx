@@ -42,14 +42,13 @@ const Principal = () => {
     const restojson = JSON.parse(resjs);
     if (restojson && Array.isArray(restojson.VCL)) {
       const data = restojson.VCL;
-      const headerRow = header.map(fieldName => `${fieldName}`).join(',');
+      const headerRow = header.map(fieldName => `${fieldName}`).join(',').replace(/_/g, ' ');
   
       const rows = data.map((row: any) => {
         const rowValues = header
         .map(fieldName => `${row[fieldName] || ''}`)
         .join(',')
         .replace(/"/g, '')
-        .replace(/_/g, ' ')
         // Eliminar la coma final si existe
         return rowValues.endsWith(',') ? rowValues.slice(0, -1) : rowValues;
       });
