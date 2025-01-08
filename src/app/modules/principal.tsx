@@ -27,8 +27,8 @@ const Principal = () => {
       const header = [
         'Handle', 'Title',
         'Option1_Name', 'Option1_Value', 'Option2_Name', 'Option2_Value', 'Option3_Name', 'Option3_Value',
-        'SKU', 'HS Code', 'COO', 'Location',
-        'Incoming', 'Unavailable', 'Committed', 'Available', 'On hand'
+        'SKU', 'HS Code', 'COO', 'Bodega',
+        'Incoming', 'Unavailable', 'Committed', 'Available', 'On_hand'
       ];
       const csv = jsonToCsv(data, header);
       downloadCsv(csv, 'inventarioshopy.csv');
@@ -42,7 +42,7 @@ const Principal = () => {
     const restojson = JSON.parse(resjs);
     if (restojson && Array.isArray(restojson.VCL)) {
       const data = restojson.VCL;
-      const headerRow = header.map(fieldName => `${fieldName}`).join(',').replace(/_/g, ' ');
+      const headerRow = header.map(fieldName => `${fieldName}`).join(',').replace(/_/g, ' ').replace('Bodega', 'Location');
   
       const rows = data.map((row: any) => {
         const rowValues = header
